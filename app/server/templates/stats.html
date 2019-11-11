@@ -1,0 +1,17 @@
+ {% extends "layout.html" %} {% block head %} {{ super() }}
+<script src="{{ url_for('static', filename='js/stats.js') }}"></script>
+<script src="{{ url_for('static', filename='js/Chart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+
+{% endblock %} {% block content %}
+<section class="center-screen">
+    <h1>Stats Page</h1>
+    <div class="alert alert-success" id="url_registrations_count"></div>
+    <section class="row">
+        <canvas class="col" id="time_stats" width="700" height="300"></canvas>
+    </section>
+    <script>
+        draw_stats('{{ stats_data | tojson | safe}}')
+    </script>
+</section>
+{% endblock %}

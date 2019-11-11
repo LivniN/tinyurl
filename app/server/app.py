@@ -1,5 +1,5 @@
 import os
-import time
+
 from flask import Flask, render_template, request, redirect, send_from_directory, jsonify
 
 from app.server import utils
@@ -16,12 +16,8 @@ def index():
 
 @app.route('/stats')
 def stats_page():
-    stats_data = {'url_redirection_registrations': db.get_url_redirection_registrations_count(),
-                  'last_minute_redirections': 0,
-                  'last_hour_redirections': 0,
-                  'last_day_redirections': 0
-                  }
-    return render_template('stats.html')
+    stats_data = utils.get_stats()
+    return render_template('stats.html', stats_data=stats_data)
 
 
 @app.route('/post_new_url', methods=['POST'])
@@ -45,7 +41,7 @@ def redirect_or_not_found(error):
     except ServerError:
         return error_page()
     if base_url:
-        utils.sign_redirect(time.time())
+        utils.sign_redirect()
         return redirect(base_url)
     return error_page()
 
@@ -61,4 +57,5 @@ def favicon():
 
 
 def error_page():
+    utils.sign_bad_request()
     return render_template('custom_error_page.html')

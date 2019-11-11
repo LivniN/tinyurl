@@ -1,4 +1,6 @@
- {% extends "layout.html" %} {% block content %}
+ {% extends "layout.html" %} {% block head %}{{ super() }}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %} {% block content %}
 <section class="center-screen">
     <h1>Tiny Url Generator</h1>
     <div class=" border rounded border-white">

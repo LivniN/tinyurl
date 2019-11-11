@@ -1,3 +1,4 @@
+import datetime
 import string
 
 from app.server.context import db
@@ -26,8 +27,43 @@ def get_base_url(tiny_url):
     return base_url
 
 
-def sign_redirect(timestamp):
-    pass
+def sign_redirect():
+    db.insert_data_to_stats('redirect')
 
-def sign_bad_request(timestamp):
-    pass
+
+def sign_bad_request():
+    db.insert_data_to_stats('error')
+
+
+def get_stats():
+    url_redirection_registrations_count = db.get_url_redirection_registrations_count()
+    last_minute = dict((k, v) for k, v in db.get_stats(datetime.datetime.now() - datetime.timedelta(minutes=1)))
+    last_hour = dict((k, v) for k, v in db.get_stats(datetime.datetime.now() - datetime.timedelta(hours=1)))
+    last_day = dict((k, v) for k, v in db.get_stats(datetime.datetime.now() - datetime.timedelta(hours=24)))
+    stats_data = {
+        'url_redirection_registrations_count': url_redirection_registrations_count,
+        'time_stats': {
+            'labels': ['last minute', 'last hour', 'last day'],
+            'data_objects': [
+                {
+                    'label': 'error',
+                    'data': get_list_of_values('error', last_minute, last_hour, last_day),
+                    'backgroundColor': '#910d0d',
+                },
+                {
+                    'label': 'redirect',
+                    'data': get_list_of_values('redirect', last_minute, last_hour, last_day),
+                    'backgroundColor': '#0d912e',
+                }
+            ],
+        },
+    }
+    return stats_data
+
+
+def get_list_of_values(label, last_min, last_hour, last_day):
+    label_data = [last_min.get(label, 0),
+                  last_hour.get(label, 0),
+                  last_day.get(label, 0)
+                  ]
+    return label_data

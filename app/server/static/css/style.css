@@ -11,3 +11,9 @@ body {
     text-align: center;
     min-height: 100vh;
 }
+
+#response_section,
+#on_success,
+#on_failure {
+    display: none;
+}
