@@ -38,7 +38,8 @@ def init_if_not_exists():
 
 
 def get_last_rowid():
-    return db_executor(last_insert_rowid).fetchone()[0]
+    result = db_executor(last_insert_rowid).fetchone()[0]
+    return result if result else 0
 
 
 def insert_new_url(base_url, tiny_url):

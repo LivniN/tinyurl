@@ -17,7 +17,11 @@ def get_unique_tiny_path():
 
 def get_tiny_url(base_url, host_url):
     tiny_url = db.get_exists_tiny_url(base_url)
-    return tiny_url if tiny_url else host_url + get_unique_tiny_path()
+    if tiny_url:
+        return tiny_url
+    tiny_url = host_url + get_unique_tiny_path()
+    db.insert_new_url(base_url, tiny_url)
+    return tiny_url
 
 
 def get_base_url(tiny_url):

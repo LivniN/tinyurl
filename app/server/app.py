@@ -26,9 +26,8 @@ def post_new_url():
     base_url = request_json.get('base_url')
     if not base_url:
         return jsonify({'success': False, 'error': 'Missing base_url attribute'})
-    tiny_url = utils.get_tiny_url(base_url=base_url, host_url=request.host_url)
     try:
-        db.insert_new_url(base_url, tiny_url)
+        tiny_url = utils.get_tiny_url(base_url=base_url, host_url=request.host_url)
     except ServerError:
         return jsonify({'success': False, 'error': 'Failed to get short url'})
     return jsonify({'success': True, 'tiny_url': tiny_url})
