@@ -23,25 +23,25 @@ def stats_page():
 @app.route('/post_new_url', methods=['POST'])
 def post_new_url():
     request_json = request.get_json()
-    base_url = request_json.get('base_url')
-    if not base_url:
-        return jsonify({'success': False, 'error': 'Missing base_url attribute'})
+    long_url = request_json.get('long_url')
+    if not long_url:
+        return jsonify({'success': False, 'error': 'Missing long_url attribute'})
     try:
-        tiny_url = utils.get_tiny_url(base_url=base_url, host_url=request.host_url)
+        short_url = utils.get_short_url(long_url=long_url, host_url=request.host_url)
     except ServerError:
         return jsonify({'success': False, 'error': 'Failed to get short url'})
-    return jsonify({'success': True, 'tiny_url': tiny_url})
+    return jsonify({'success': True, 'short_url': short_url})
 
 
 @app.errorhandler(404)
 def redirect_or_not_found(error):
     try:
-        base_url = utils.get_base_url(request.base_url)
+        long_url = utils.get_long_url(request.base_url)
     except ServerError:
         return error_page()
-    if base_url:
+    if long_url:
         utils.sign_redirect()
-        return redirect(base_url)
+        return redirect(long_url)
     return error_page()
 
 
