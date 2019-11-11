@@ -1,0 +1,30 @@
+ {% extends "layout.html" %} {% block content %}
+<section class="center-screen">
+    <h1>Tiny Url Generator</h1>
+    <div class=" border rounded border-white">
+        <!-- Get tiny url form -->
+        <div id="get_url_form" class="row justify-content-center">
+            <div class="form-group col-xs-5 col-lg-6">
+                <div> Enter long url: </div>
+            </div>
+            <div class="form-group col-xs-5 col-lg-10">
+                <input type="text" id="base_url" name="base_url" class="form-control" placeholder=" www.somethingverylong.com/1234.html " required autofocus>
+            </div>
+            <div class="form-group col-xs-5 col-lg-6">
+                <button class="btn btn-success" onclick="get_tiny_url()">Create short URL</button>
+            </div>
+        </div>
+        <!-- response section -->
+        <section id="response_section" style="display: none;">
+            <div id="on_success" class="alert alert-success" style="display: none;">
+                <strong>SUCCESS! short URL:</strong>
+                <a class="col" id="tiny_url_output" href="#" target="_blank"></a>
+            </div>
+            <div id="on_failure" class="alert alert-danger" style="display: none;">
+                <strong>ERROR! </strong>
+                <span id="error_output"></span>
+            </div>
+        </section>
+    </div>
+</section>
+{% endblock %}
