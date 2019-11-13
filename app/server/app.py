@@ -35,6 +35,13 @@ def post_new_url():
 
 @app.errorhandler(404)
 def redirect_or_not_found(error):
+    '''
+    catching 404 errors, checking for shortURL in DB
+    :param error:
+    :return:
+    error_page() is there is no matching shortURL
+    redirect to longURL founded in DB.
+    '''
     try:
         long_url = utils.get_long_url(request.base_url)
     except ServerError:
