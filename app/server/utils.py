@@ -45,7 +45,7 @@ def get_stats():
         'url_redirection_registrations_count': url_redirection_registrations_count,
         'time_stats': {
             'labels': ['last minute', 'last hour', 'last day'],
-            'data_objects': [
+            'datasets': [
                 {
                     'label': 'error',
                     'data': get_list_of_values(db.get_error_stats),

@@ -1,0 +1,14 @@
+<template>
+    <section class="center-screen">
+    <h3>Oops...</h3>
+    <h5>the page you are trying to reach doesn't exists</h5>
+    <a href="/"> go to home page</a>
+</section>
+</template>
+
+<script>
+    export default {
+        name: "ErrorPage"
+    }
+</script>
+

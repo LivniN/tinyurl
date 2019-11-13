@@ -1,23 +1,24 @@
-import os
-
-from flask import Flask, render_template, request, redirect, send_from_directory, jsonify
+from flask import Flask, render_template, request, redirect, jsonify
+from flask_cors import CORS
 
 from app.server import utils
 from app.server.context import db, ServerError
 
 db.init_if_not_exists()
 app = Flask(__name__)
+# enable CORS
+CORS(app, resources={r'/*': {'origins': '*'}})
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('./client/index.html')
 
 
-@app.route('/stats')
+@app.route('/stats', methods=['GET'])
 def stats_page():
     stats_data = utils.get_stats()
-    return render_template('stats.html', stats_data=stats_data)
+    return jsonify({'success': True, 'stats_data': stats_data})
 
 
 @app.route('/post_new_url', methods=['POST'])
@@ -50,11 +51,6 @@ def method_not_allowed(error):
     return error_page()
 
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static/images'), 'favicon.png')
-
-
 def error_page():
     utils.sign_bad_request()
-    return render_template('custom_error_page.html')
+    return redirect('custom_error_page.html')
